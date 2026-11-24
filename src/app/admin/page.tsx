@@ -22,6 +22,7 @@ import {
   Smartphone,
   Tablet,
   TrendingUp,
+  Trash2,
   Users,
 } from "lucide-react";
 import Link from "next/link";
@@ -147,6 +148,32 @@ export default function AdminPage() {
     setSelectedDate(newDate);
     if (passcode) {
       fetchStats(passcode, newDate);
+    }
+  };
+
+  const handleResetAnalytics = async () => {
+    const confirmMsg = isRtl
+      ? "هل أنت متأكد من رغبتك في حذف جميع بيانات وسجلات الزوار (مسح الـ Seeds) والبدء من الصفر تماماً؟"
+      : "Are you sure you want to clear all visitor logs and seed data, resetting everything to zero?";
+    if (!window.confirm(confirmMsg)) return;
+
+    try {
+      setIsRefreshing(true);
+      const res = await fetch("/api/analytics/reset", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-key": passcode,
+        },
+        body: JSON.stringify({ key: passcode }),
+      });
+      if (res.ok) {
+        fetchStats(passcode, selectedDate);
+      }
+    } catch (e) {
+      console.error("Failed to reset analytics:", e);
+    } finally {
+      setIsRefreshing(false);
     }
   };
 
@@ -302,6 +329,16 @@ export default function AdminPage() {
               <Brain className="h-3.5 w-3.5" />
               <span>{isRtl ? "أطلس المخ 3D" : "3D Atlas"}</span>
             </Link>
+
+            <button
+              type="button"
+              onClick={handleResetAnalytics}
+              className="flex items-center gap-1.5 rounded-xl border border-rose-500/30 bg-rose-950/20 px-3 py-2 text-xs font-medium text-rose-300 hover:bg-rose-900/40 transition-colors"
+              title={isRtl ? "مسح جميع بيانات وسجلات الزوار (حذف الـ Seeds)" : "Clear visitor seed data & reset"}
+            >
+              <Trash2 className="h-3.5 w-3.5 text-rose-400" />
+              <span className="hidden sm:inline">{isRtl ? "تصفير البيانات" : "Clear Data"}</span>
+            </button>
 
             <button
               type="button"

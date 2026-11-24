@@ -252,3 +252,16 @@ export function getAnalyticsSummary(specificDate?: string) {
     recentVisits: storage.recentVisits.slice(0, 50),
   };
 }
+
+// Reset all analytics data (clears test/seed logs)
+export function resetAnalyticsData(): AnalyticsData {
+  const empty: AnalyticsData = {
+    totalUniqueVisitors: 0,
+    totalPageviews: 0,
+    daily: {},
+    recentVisits: [],
+    uniqueVisitorIds: [],
+  };
+  saveStorage(empty);
+  return empty;
+}

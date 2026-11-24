@@ -97,37 +97,30 @@ function HotspotPin({ region }: HotspotPinProps) {
             className="group relative flex items-center justify-center p-1 focus:outline-none cursor-pointer"
             title={displayName}
           >
-            {/* Subtle Expanding Beacon Ping */}
+            {/* Refined Medical Crosshair Reticle (Clean, sleek, non-distracting) */}
             <span
-              className="absolute inline-flex h-7 w-7 rounded-full opacity-35 animate-ping transition-colors"
-              style={{ backgroundColor: activeColor }}
-            />
-
-            {/* Core Sleek Pin Disc (20px, subtle glow, refined borders) */}
-            <span
-              className={`relative flex h-5 w-5 items-center justify-center rounded-full border-[1.5px] bg-[#07070d]/90 transition-all duration-200 ${
+              className={`relative flex h-4 w-4 items-center justify-center rounded-full border bg-[#07070d]/80 backdrop-blur-sm transition-all duration-200 ${
                 isSelected
-                  ? "scale-115 shadow-[0_0_14px_rgba(6,182,212,0.7)]"
+                  ? "scale-125 border-cyan-300 shadow-[0_0_12px_rgba(6,182,212,0.9)]"
                   : isHovered
-                    ? "scale-110 shadow-[0_0_12px_rgba(168,85,247,0.7)]"
-                    : "shadow-[0_0_8px_rgba(0,0,0,0.6)] hover:scale-105"
+                    ? "scale-115 border-purple-300 shadow-[0_0_10px_rgba(168,85,247,0.8)]"
+                    : "border-gray-400/60 hover:scale-110 shadow-[0_0_4px_rgba(0,0,0,0.5)]"
               }`}
               style={{
-                borderColor: activeColor,
-                boxShadow: isSelected
-                  ? `0 0 12px ${activeColor}, 0 0 4px #ffffff`
-                  : `0 0 8px ${activeColor}80`,
+                borderColor: isSelected || isHovered ? activeColor : undefined,
               }}
             >
-              {/* Inner Glowing Core Dot */}
+              {/* Inner Precision Reticle Dot */}
               {quizMode ? (
-                <span className="text-[10px] font-bold text-white leading-none">
+                <span className="text-[9px] font-bold text-white leading-none">
                   {isQuizCorrect ? "✓" : isQuizIncorrect ? "✗" : "?"}
                 </span>
               ) : (
                 <span
-                  className="h-2 w-2 rounded-full transition-transform group-hover:scale-110"
-                  style={{ backgroundColor: activeColor }}
+                  className="h-1.5 w-1.5 rounded-full transition-all"
+                  style={{
+                    backgroundColor: isSelected || isHovered ? activeColor : "#e2e8f0",
+                  }}
                 />
               )}
             </span>
@@ -182,12 +175,15 @@ export function Hotspots() {
   const pickedCoords = useBrainStore((state) => state.pickedCoords);
   const devPickerMode = useBrainStore((state) => state.devPickerMode);
   const setPickedCoords = useBrainStore((state) => state.setPickedCoords);
+  const labelsVisible = useBrainStore((state) => state.labelsVisible);
+  const quizMode = useBrainStore((state) => state.quizMode);
 
   return (
     <group>
-      {BRAIN_REGIONS.map((region) => (
-        <HotspotPin key={region.id} region={region} />
-      ))}
+      {(labelsVisible || quizMode) &&
+        BRAIN_REGIONS.map((region) => (
+          <HotspotPin key={region.id} region={region} />
+        ))}
 
       {/* Dev Coordinate Picker Marker */}
       {devPickerMode && pickedCoords && (
