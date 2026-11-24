@@ -1,3 +1,4 @@
+import { AnalyticsTracker } from "@/components/analytics/AnalyticsTracker";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -14,7 +15,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="h-screen w-screen overflow-hidden bg-[#07070d] text-slate-100 antialiased selection:bg-purple-500 selection:text-white">
+      <body className="min-h-screen w-screen bg-[#07070d] text-slate-100 antialiased selection:bg-purple-500 selection:text-white">
+        <AnalyticsTracker />
         {children}
       </body>
     </html>

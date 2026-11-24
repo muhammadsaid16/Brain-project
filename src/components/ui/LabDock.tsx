@@ -3,6 +3,7 @@
 import { useBrainStore } from "@/store/useBrainStore";
 import type { ClippingAxis } from "@/types/brain";
 import {
+  BarChart2,
   Camera,
   Crosshair,
   Eye,
@@ -14,6 +15,7 @@ import {
   Sliders,
   Sparkles,
 } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 
 export function LabDock() {
@@ -266,6 +268,16 @@ export function LabDock() {
         >
           <Crosshair className="h-4 w-4" />
         </button>
+
+        {/* Button 7: Admin Dashboard */}
+        <Link
+          href="/admin"
+          target="_blank"
+          title={isRtl ? "لوحة تحكم الزوار (Admin)" : "Admin Analytics Dashboard"}
+          className="flex items-center justify-center rounded-xl p-2 text-xs transition-all border border-transparent text-gray-400 hover:border-purple-500/30 hover:bg-white/5 hover:text-cyan-400"
+        >
+          <BarChart2 className="h-4 w-4" />
+        </Link>
       </div>
     </nav>
   );

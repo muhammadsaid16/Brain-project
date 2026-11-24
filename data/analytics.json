@@ -1,0 +1,32 @@
+{
+  "totalUniqueVisitors": 1,
+  "totalPageviews": 1,
+  "daily": {
+    "2026-11-24": {
+      "date": "2026-11-24",
+      "uniqueVisitors": 1,
+      "pageviews": 1,
+      "visitorIds": [
+        "vid_1795540390469_jxk5mrx"
+      ]
+    }
+  },
+  "recentVisits": [
+    {
+      "id": "log_1795540392304_w0ru9",
+      "visitorId": "vid_1795540390469_jxk5mrx",
+      "timestamp": "2026-11-24T17:13:12.304Z",
+      "date": "2026-11-24",
+      "time": "19:13:12",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Linux",
+      "language": "en-US",
+      "path": "/",
+      "referrer": "direct"
+    }
+  ],
+  "uniqueVisitorIds": [
+    "vid_1795540390469_jxk5mrx"
+  ]
+}
