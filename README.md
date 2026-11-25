@@ -26,7 +26,7 @@ A production-ready **Interactive 3D Neuroanatomy & Brain Study Web Application**
   - Camera-facing occlusion handling so front-facing pins shine bright without obscuring cortical folds.
   - **Developer Coordinate Picker Mode:** Click on any surface point (or `Shift + Click`) to log and copy exact 3D coordinates.
 
-- 🔬 **Real-Time MRI Cross-Section Slicer:**
+- 🔬 **Surface Cross-Section Slicer:**
   - Local GPU clipping planes (`gl.localClippingEnabled = true`).
   - Slices across **Sagittal (X)**, **Axial (Y)**, and **Coronal (Z)** planes with interactive depth slider.
 
@@ -48,6 +48,25 @@ A production-ready **Interactive 3D Neuroanatomy & Brain Study Web Application**
 - 🌐 **Full Bilingual Support:** Instant toggle between English and Arabic (`عربي`).
 
 ---
+
+## Learning workspace
+
+The top navigation provides six bilingual study modes:
+
+- **Anatomy:** the existing eight-region atlas and practical quiz, with topic references in the inspector.
+- **Pathways:** selectable arcuate fasciculus, corticospinal tract and optic radiation schematics, connection steps and clinical correlations.
+- **Sections:** sagittal, coronal and axial surface cuts, aligned camera presets, model-axis labels and a position slider.
+- **Cases:** three fictional cases with locked first answers, explanations, source links, a score and answer review.
+- **Vessels:** selectable ACA, MCA and PCA schematics with supplied regions and clinical correlations.
+- **References:** the bibliography used by the new teaching content.
+
+`src/data/studyData.ts` contains bilingual content, source IDs and hand-authored curve coordinates. `src/store/useStudyStore.ts` manages study modes and camera presets. Study geometry is rendered by `StudyLayers.tsx`; its resources are owned and disposed by React Three Fiber. The canvas renders on demand and camera transitions respect reduced motion.
+
+### Scope of anatomical accuracy
+
+The curves are approximate educational schematics, not patient tractography or segmented vessels. They do not reproduce all branches, fiber populations or anatomical variants. The existing GLB is a surface mesh: clipping exposes an open surface, **not MRI tissue or internal nuclei**. Axis labels describe model coordinates, not a validated radiological orientation.
+
+New explanations include topic sources. References added to legacy region descriptions are further reading, not a completed claim-by-claim clinical audit. The material has not received independent clinical review. A volumetric atlas or appropriately licensed imaging dataset is required for true tissue cross sections.
 
 ## 🚀 Getting Started
 

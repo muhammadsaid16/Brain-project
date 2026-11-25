@@ -1,6 +1,8 @@
 "use client";
 
+import { SourceLinks } from "@/components/study/StudyWorkspace";
 import { BRAIN_REGIONS } from "@/data/brainData";
+import { REGION_SOURCES } from "@/data/studyData";
 import { useBrainStore } from "@/store/useBrainStore";
 import type { InspectorTab } from "@/types/brain";
 import {
@@ -79,7 +81,7 @@ export function AnatomyInspector() {
   return (
     <section
       aria-label={isRtl ? "مستكشف التشريح" : "Anatomy Inspector"}
-      className={`fixed top-4 right-4 z-20 flex w-[410px] max-w-[calc(100vw-2rem)] flex-col rounded-2xl border border-purple-500/25 bg-[#0d0d18]/95 shadow-2xl shadow-purple-950/60 backdrop-blur-2xl transition-all duration-300 max-h-[calc(100dvh-5.5rem)] overflow-hidden max-sm:left-2 max-sm:right-2 max-sm:top-auto max-sm:bottom-[calc(env(safe-area-inset-bottom)+5rem)] max-sm:w-auto max-sm:max-h-[44dvh] ${
+      className={`fixed top-20 right-4 z-20 flex w-[410px] max-w-[calc(100vw-2rem)] flex-col rounded-2xl border border-purple-500/25 bg-[#0d0d18]/95 shadow-2xl shadow-purple-950/60 backdrop-blur-2xl transition-all duration-300 max-h-[calc(100dvh-10rem)] overflow-hidden max-sm:left-2 max-sm:right-2 max-sm:top-auto max-sm:bottom-[calc(env(safe-area-inset-bottom)+5rem)] max-sm:w-auto max-sm:max-h-[44dvh] ${
         isInspectorOpen
           ? "translate-x-0 opacity-100"
           : "translate-x-full opacity-0 pointer-events-none"
@@ -301,6 +303,10 @@ export function AnatomyInspector() {
             </div>
           </div>
         )}
+      </div>
+
+      <div className="px-4 py-3 border-t border-purple-500/15 max-h-32 overflow-y-auto">
+        <SourceLinks ids={REGION_SOURCES[region.id] ?? ["overview"]} />
       </div>
 
       {/* Footer Actions */}

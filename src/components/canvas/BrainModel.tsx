@@ -1,6 +1,7 @@
 "use client";
 
 import { useBrainStore } from "@/store/useBrainStore";
+import { useStudyStore } from "@/store/useStudyStore";
 import { useGLTF } from "@react-three/drei";
 import type { ThreeEvent } from "@react-three/fiber";
 import { useThree } from "@react-three/fiber";
@@ -13,9 +14,11 @@ const MODEL_PATH = "/models/brain.glb";
 useGLTF.preload(MODEL_PATH);
 
 export function BrainModel() {
-  const { gl } = useThree();
+  const { gl, invalidate } = useThree();
   const groupRef = useRef<THREE.Group>(null);
 
+  const mode = useStudyStore((state) => state.mode);
+  const isSchematic = mode === "pathways" || mode === "vascular";
   const hologramMode = useBrainStore((state) => state.hologramMode);
   const clippingEnabled = useBrainStore((state) => state.clippingEnabled);
   const clippingAxis = useBrainStore((state) => state.clippingAxis);
@@ -44,8 +47,11 @@ export function BrainModel() {
       normal = new THREE.Vector3(0, 0, 1);
     }
 
-    return new THREE.Plane(normal, clippingOffset);
-  }, [clippingEnabled, clippingAxis, clippingOffset]);
+    // In study views the camera faces the exposed cut rather than the retained shell.
+    return mode === "sections"
+      ? new THREE.Plane(normal.negate(), -clippingOffset)
+      : new THREE.Plane(normal, clippingOffset);
+  }, [clippingEnabled, clippingAxis, clippingOffset, mode]);
 
   // Realistic Anatomical Material
   const realisticMaterial = useMemo(() => {
@@ -61,6 +67,19 @@ export function BrainModel() {
       clipShadows: true,
     });
   }, [clippingPlane]);
+
+  // A neutral shell keeps the schematic readable without physical-material shading.
+  const schematicMaterial = useMemo(
+    () =>
+      new THREE.MeshBasicMaterial({
+        color: "#94a3b8",
+        transparent: true,
+        opacity: 0.08,
+        depthWrite: false,
+        side: THREE.FrontSide,
+      }),
+    []
+  );
 
   // Hologram / X-Ray Material
   const hologramMaterial = useMemo(() => {
@@ -138,12 +157,30 @@ export function BrainModel() {
     clonedScene.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
-        mesh.castShadow = true;
-        mesh.receiveShadow = true;
-        mesh.material = hologramMode ? hologramMaterial : realisticMaterial;
+        mesh.castShadow = !isSchematic;
+        mesh.receiveShadow = !isSchematic;
+        mesh.material = isSchematic
+          ? schematicMaterial
+          : hologramMode
+            ? hologramMaterial
+            : realisticMaterial;
       }
     });
-  }, [clonedScene, hologramMode, realisticMaterial, hologramMaterial]);
+    invalidate();
+  }, [
+    clonedScene,
+    hologramMode,
+    realisticMaterial,
+    hologramMaterial,
+    schematicMaterial,
+    isSchematic,
+    invalidate,
+  ]);
+
+  useEffect(() => () => schematicMaterial.dispose(), [schematicMaterial]);
+  useEffect(() => () => realisticMaterial.dispose(), [realisticMaterial]);
+  useEffect(() => () => hologramMaterial.dispose(), [hologramMaterial]);
+  useEffect(() => () => wireframeMaterial.dispose(), [wireframeMaterial]);
 
   // Handle Coordinate Picker
   const handleMeshClick = (e: ThreeEvent<MouseEvent>) => {
@@ -167,7 +204,7 @@ export function BrainModel() {
   return (
     <group ref={groupRef} onClick={handleMeshClick}>
       <primitive object={clonedScene} />
-      {hologramMode && <primitive object={wireframeScene} />}
+      {hologramMode && !isSchematic && <primitive object={wireframeScene} />}
     </group>
   );
 }

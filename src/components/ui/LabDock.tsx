@@ -85,7 +85,7 @@ export function LabDock() {
           <div className="flex items-center justify-between pb-2 border-b border-cyan-500/20 text-xs text-cyan-300 font-semibold">
             <span className="flex items-center gap-1.5">
               <Scissors className="h-3.5 w-3.5" />
-              {isRtl ? "مستوى القطع المقطعي (MRI Slicer)" : "MRI Cross-Section Slicer"}
+              {isRtl ? "مستوى القطع المقطعي (قطع السطح)" : "Surface Cross-Section"}
             </span>
             <span className="font-mono text-[11px] text-gray-400">
               Offset: {clippingOffset.toFixed(2)}
@@ -127,7 +127,7 @@ export function LabDock() {
 
           <div className="mt-2 flex justify-between items-center text-[10px] text-gray-400">
             <span>
-              {isRtl ? "حرك المؤشر لقطع أنسجة الدماغ" : "Drag slider to slice through brain tissue"}
+              {isRtl ? "حرك المؤشر لقطع أنسجة الدماغ" : "Drag slider to move the surface cut"}
             </span>
             <button
               type="button"
@@ -147,9 +147,7 @@ export function LabDock() {
           <button
             type="button"
             onClick={handleClippingToggle}
-            title={
-              isRtl ? "مستوى القطع التشريحي (MRI)" : "Cross-Section Slicer (MRI Clipping Plane)"
-            }
+            title={isRtl ? "مستوى قطع السطح" : "Surface Cross-Section"}
             className={`group flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-medium transition-all duration-200 border ${
               clippingEnabled
                 ? "border-cyan-400/60 bg-cyan-950/60 text-cyan-300 shadow-md shadow-cyan-950/50"
@@ -159,7 +157,7 @@ export function LabDock() {
             <Scissors
               className={`h-4 w-4 ${clippingEnabled ? "text-cyan-400" : "text-gray-400"}`}
             />
-            <span className="hidden md:inline">{isRtl ? "قطع مقطعي" : "MRI Slice"}</span>
+            <span className="hidden md:inline">{isRtl ? "قطع مقطعي" : "Section"}</span>
           </button>
           {clippingEnabled && (
             <button

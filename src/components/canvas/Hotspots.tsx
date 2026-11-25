@@ -10,9 +10,10 @@ import * as THREE from "three";
 
 interface HotspotPinProps {
   region: BrainRegion;
+  portal: React.RefObject<HTMLElement>;
 }
 
-function HotspotPin({ region }: HotspotPinProps) {
+function HotspotPin({ region, portal }: HotspotPinProps) {
   const selectedRegionId = useBrainStore((state) => state.selectedRegionId);
   const hoveredRegionId = useBrainStore((state) => state.hoveredRegionId);
   const labelsVisible = useBrainStore((state) => state.labelsVisible);
@@ -79,6 +80,8 @@ function HotspotPin({ region }: HotspotPinProps) {
   return (
     <group position={region.position}>
       <Html
+        portal={portal}
+        zIndexRange={[10, 0]}
         center
         distanceFactor={5.2}
         className="pointer-events-auto select-none transition-all duration-200"
@@ -171,7 +174,7 @@ function HotspotPin({ region }: HotspotPinProps) {
   );
 }
 
-export function Hotspots() {
+export function Hotspots({ portal }: { portal: React.RefObject<HTMLElement> }) {
   const pickedCoords = useBrainStore((state) => state.pickedCoords);
   const devPickerMode = useBrainStore((state) => state.devPickerMode);
   const setPickedCoords = useBrainStore((state) => state.setPickedCoords);
@@ -182,13 +185,19 @@ export function Hotspots() {
     <group>
       {(labelsVisible || quizMode) &&
         BRAIN_REGIONS.map((region) => (
-          <HotspotPin key={region.id} region={region} />
+          <HotspotPin key={region.id} region={region} portal={portal} />
         ))}
 
       {/* Dev Coordinate Picker Marker */}
       {devPickerMode && pickedCoords && (
         <group position={pickedCoords}>
-          <Html center distanceFactor={5.2} className="pointer-events-auto select-none">
+          <Html
+            portal={portal}
+            zIndexRange={[10, 0]}
+            center
+            distanceFactor={5.2}
+            className="pointer-events-auto select-none"
+          >
             <div className="flex flex-col items-center">
               <span className="relative flex h-4 w-4 items-center justify-center rounded-full border border-amber-300 bg-amber-500 shadow-[0_0_10px_#f59e0b]">
                 <span className="h-1.5 w-1.5 rounded-full bg-white" />

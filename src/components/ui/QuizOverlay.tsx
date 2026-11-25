@@ -75,7 +75,7 @@ export function QuizOverlay() {
 
   return (
     <div
-      className="pointer-events-none fixed inset-0 z-30 flex flex-col justify-between p-4 sm:p-6"
+      className="pointer-events-none fixed inset-0 z-30 flex flex-col justify-between p-4 pt-32 sm:p-6 sm:pt-24"
       dir={isRtl ? "rtl" : "ltr"}
     >
       {/* Top Floating Quiz Status Bar */}

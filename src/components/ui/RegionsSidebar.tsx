@@ -17,6 +17,7 @@ import {
 import { useMemo, useState } from "react";
 
 export function RegionsSidebar() {
+  const isInspectorOpen = useBrainStore((state) => state.isInspectorOpen);
   const isSidebarOpen = useBrainStore((state) => state.isSidebarOpen);
   const toggleSidebar = useBrainStore((state) => state.toggleSidebar);
   const selectedRegionId = useBrainStore((state) => state.selectedRegionId);
@@ -102,12 +103,12 @@ export function RegionsSidebar() {
 
   return (
     <aside
-      className={`fixed top-4 left-4 z-20 flex flex-col transition-all duration-300 ease-in-out max-sm:left-2 max-sm:top-2 ${
+      className={`fixed top-20 left-4 z-20 flex flex-col transition-all duration-300 ease-in-out max-sm:left-2 max-sm:top-[7.5rem] ${
         isSidebarOpen ? "w-80 max-w-[calc(100vw-2rem)]" : "w-12"
-      }`}
+      } ${isInspectorOpen ? "max-sm:hidden" : ""}`}
       dir={isRtl ? "rtl" : "ltr"}
     >
-      <div className="relative flex flex-col rounded-2xl border border-purple-500/20 bg-[#0d0d18]/90 shadow-2xl shadow-purple-950/40 backdrop-blur-xl overflow-hidden max-h-[calc(100dvh-2rem)] max-sm:max-h-[44dvh]">
+      <div className="relative flex flex-col rounded-2xl border border-purple-500/20 bg-[#0d0d18]/90 shadow-2xl shadow-purple-950/40 backdrop-blur-xl overflow-hidden max-h-[calc(100dvh-9rem)] max-sm:max-h-[44dvh]">
         {/* Header Bar */}
         <div className="flex items-center justify-between border-b border-purple-500/15 p-3.5">
           <div className="flex items-center gap-2.5 overflow-hidden">
@@ -306,7 +307,7 @@ export function RegionsSidebar() {
             {filteredRegions.length === 0 && (
               <div
                 className="rounded-xl border border-purple-500/15 bg-purple-950/20 px-3 py-5 text-center"
-                role="status"
+                aria-live="polite"
               >
                 <Search className="mx-auto h-5 w-5 text-gray-500" aria-hidden="true" />
                 <p className="mt-2 text-xs font-medium text-gray-300">
