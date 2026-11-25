@@ -161,7 +161,7 @@ export function CanvasLoader() {
 
 export default function BrainCanvas() {
   return (
-    <div className="relative h-screen w-screen overflow-hidden bg-[#07070d]">
+    <div className="relative h-[100dvh] w-full overflow-hidden bg-[#07070d]">
       <Suspense fallback={<CanvasLoader />}>
         <Canvas
           shadows

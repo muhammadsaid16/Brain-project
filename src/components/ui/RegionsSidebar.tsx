@@ -46,13 +46,28 @@ export function RegionsSidebar() {
   const filteredRegions = useMemo(() => {
     if (!searchQuery.trim()) return BRAIN_REGIONS;
     const q = searchQuery.toLowerCase();
-    return BRAIN_REGIONS.filter(
-      (r) =>
-        r.nameEn.toLowerCase().includes(q) ||
-        r.nameAr.includes(q) ||
-        r.overview.summaryEn.toLowerCase().includes(q) ||
-        r.overview.summaryAr.includes(q)
-    );
+    return BRAIN_REGIONS.filter((region) => {
+      const searchableText = [
+        region.nameEn,
+        region.nameAr,
+        region.latinName,
+        region.overview.summaryEn,
+        region.overview.summaryAr,
+        region.overview.locationEn,
+        region.overview.locationAr,
+        ...region.overview.keyLandmarks,
+        ...region.functions.en,
+        ...region.functions.ar,
+        ...region.clinical.syndromesEn,
+        ...region.clinical.syndromesAr,
+        ...region.clinical.symptomsEn,
+        ...region.clinical.symptomsAr,
+        ...region.vascularSupply.arteriesEn,
+        ...region.vascularSupply.arteriesAr,
+      ];
+
+      return searchableText.some((text) => text?.toLowerCase().includes(q));
+    });
   }, [searchQuery]);
 
   const categories: {
@@ -87,12 +102,12 @@ export function RegionsSidebar() {
 
   return (
     <aside
-      className={`fixed top-4 left-4 z-20 flex flex-col transition-all duration-300 ease-in-out select-none ${
-        isSidebarOpen ? "w-80" : "w-12"
+      className={`fixed top-4 left-4 z-20 flex flex-col transition-all duration-300 ease-in-out max-sm:left-2 max-sm:top-2 ${
+        isSidebarOpen ? "w-80 max-w-[calc(100vw-2rem)]" : "w-12"
       }`}
       dir={isRtl ? "rtl" : "ltr"}
     >
-      <div className="relative flex flex-col rounded-2xl border border-purple-500/20 bg-[#0d0d18]/80 shadow-2xl shadow-purple-950/40 backdrop-blur-xl overflow-hidden max-h-[calc(100vh-2rem)]">
+      <div className="relative flex flex-col rounded-2xl border border-purple-500/20 bg-[#0d0d18]/90 shadow-2xl shadow-purple-950/40 backdrop-blur-xl overflow-hidden max-h-[calc(100dvh-2rem)] max-sm:max-h-[44dvh]">
         {/* Header Bar */}
         <div className="flex items-center justify-between border-b border-purple-500/15 p-3.5">
           <div className="flex items-center gap-2.5 overflow-hidden">
@@ -165,6 +180,7 @@ export function RegionsSidebar() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                aria-label={isRtl ? "ابحث عن منطقة دماغية" : "Search brain regions"}
                 placeholder={isRtl ? "بحث في المناطق والوظائف..." : "Search regions, functions..."}
                 className={`w-full rounded-xl border border-purple-500/20 bg-[#07070d]/60 py-2 text-xs text-white placeholder-gray-500 focus:border-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-400/50 transition-all ${
                   isRtl ? "pr-9 pl-3" : "pl-9 pr-3"
@@ -286,6 +302,21 @@ export function RegionsSidebar() {
                 );
               })}
             </div>
+
+            {filteredRegions.length === 0 && (
+              <div
+                className="rounded-xl border border-purple-500/15 bg-purple-950/20 px-3 py-5 text-center"
+                role="status"
+              >
+                <Search className="mx-auto h-5 w-5 text-gray-500" aria-hidden="true" />
+                <p className="mt-2 text-xs font-medium text-gray-300">
+                  {isRtl ? "لم نعثر على مناطق مطابقة" : "No matching regions found"}
+                </p>
+                <p className="mt-1 text-[11px] text-gray-500">
+                  {isRtl ? "جرّب اسمًا أو مصطلحًا آخر." : "Try another name or term."}
+                </p>
+              </div>
+            )}
 
             {/* Quick Helper Note */}
             <div className="mt-4 border-t border-purple-500/15 pt-3 text-[11px] text-gray-500">

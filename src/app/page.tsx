@@ -14,7 +14,7 @@ const BrainCanvas = dynamic(() => import("@/components/canvas/BrainCanvas"), {
 
 export default function Home() {
   return (
-    <main className="relative h-screen w-screen overflow-hidden bg-[#07070d]">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#07070d]">
       {/* 3D WebGL Canvas Layer (100vw x 100vh) */}
       <BrainCanvas />
 

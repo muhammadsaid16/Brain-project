@@ -1,4 +1,5 @@
 import { AnalyticsTracker } from "@/components/analytics/AnalyticsTracker";
+import { LanguageDocumentSync } from "@/components/ui/LanguageDocumentSync";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -15,8 +16,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="min-h-screen w-screen bg-[#07070d] text-slate-100 antialiased selection:bg-purple-500 selection:text-white">
+      <body className="min-h-screen w-full bg-[#07070d] text-slate-100 antialiased selection:bg-purple-500 selection:text-white">
         <AnalyticsTracker />
+        <LanguageDocumentSync />
         {children}
       </body>
     </html>

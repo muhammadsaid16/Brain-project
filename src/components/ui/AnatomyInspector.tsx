@@ -78,8 +78,8 @@ export function AnatomyInspector() {
 
   return (
     <section
-      aria-label="Anatomy Inspector"
-      className={`fixed top-4 right-4 z-20 flex w-[410px] max-w-[calc(100vw-2rem)] flex-col rounded-2xl border border-purple-500/25 bg-[#0d0d18]/90 shadow-2xl shadow-purple-950/60 backdrop-blur-2xl transition-all duration-300 max-h-[calc(100vh-5.5rem)] overflow-hidden ${
+      aria-label={isRtl ? "مستكشف التشريح" : "Anatomy Inspector"}
+      className={`fixed top-4 right-4 z-20 flex w-[410px] max-w-[calc(100vw-2rem)] flex-col rounded-2xl border border-purple-500/25 bg-[#0d0d18]/95 shadow-2xl shadow-purple-950/60 backdrop-blur-2xl transition-all duration-300 max-h-[calc(100dvh-5.5rem)] overflow-hidden max-sm:left-2 max-sm:right-2 max-sm:top-auto max-sm:bottom-[calc(env(safe-area-inset-bottom)+5rem)] max-sm:w-auto max-sm:max-h-[44dvh] ${
         isInspectorOpen
           ? "translate-x-0 opacity-100"
           : "translate-x-full opacity-0 pointer-events-none"
@@ -110,7 +110,8 @@ export function AnatomyInspector() {
           <button
             type="button"
             onClick={() => toggleInspector(false)}
-            title="Close Inspector"
+            title={isRtl ? "إغلاق المستكشف" : "Close Inspector"}
+            aria-label={isRtl ? "إغلاق المستكشف" : "Close Inspector"}
             className="flex h-7 w-7 items-center justify-center rounded-lg text-gray-400 hover:bg-white/10 hover:text-white transition-colors"
           >
             <X className="h-4 w-4" />

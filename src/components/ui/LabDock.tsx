@@ -59,7 +59,7 @@ export function LabDock() {
   return (
     <nav
       aria-label="Lab Controls Dock"
-      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 select-none"
+      className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 z-20 flex max-w-[calc(100vw-1rem)] flex-col items-center gap-2"
       dir={isRtl ? "rtl" : "ltr"}
     >
       {/* Dev Picker Active Floating Badge */}
@@ -141,7 +141,7 @@ export function LabDock() {
       )}
 
       {/* Main Glassmorphic Dock Container */}
-      <div className="flex items-center gap-1.5 sm:gap-2 rounded-2xl border border-purple-500/25 bg-[#0d0d18]/85 p-2 shadow-2xl shadow-purple-950/60 backdrop-blur-xl">
+      <div className="lab-dock-scroll flex items-center gap-1.5 sm:gap-2 rounded-2xl border border-purple-500/25 bg-[#0d0d18]/90 p-2 shadow-2xl shadow-purple-950/60 backdrop-blur-xl">
         {/* Button 1: Cross-Section Slicer */}
         <div className="relative">
           <button
